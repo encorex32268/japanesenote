@@ -1,14 +1,19 @@
 plugins {
-    id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'com.android.application'
+    id 'kotlin-kapt'
+    id 'kotlin-parcelize'
+    id 'dagger.hilt.android.plugin'
 }
+
+
 
 android {
     compileSdk 32
 
     defaultConfig {
         applicationId "com.lihan.japanesenote"
-        minSdk 21
+        minSdk 23
         targetSdk 32
         versionCode 1
         versionName "1.0"
@@ -17,6 +22,8 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+        javaCompileOptions.annotationProcessorOptions.arguments['dagger.hilt.disableModulesHaveInstallInCheck'] = 'true'
+
     }
 
     buildTypes {
@@ -38,10 +45,12 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion compose_version
     }
+
+    kapt {
+        correctErrorTypes true
+    }
     packagingOptions {
-        resources {
-            excludes += '/META-INF/{AL2.0,LGPL2.1}'
-        }
+        resources.excludes.add("META-INF/gradle/incremental.annotation.processors")
     }
 }
 
@@ -59,4 +68,41 @@ dependencies {
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
+
+
+
+    implementation "androidx.core:core-ktx:$core_version"
+    implementation "androidx.activity:activity-compose:$activity_compose_version"
+
+    // Compose
+    implementation "androidx.compose.ui:ui:$compose_version"
+    implementation "androidx.compose.material:material:$compose_version"
+    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
+    implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
+    implementation "androidx.compose.material:material-icons-extended:$compose_version"
+
+    // Navigation
+    implementation "androidx.navigation:navigation-compose:$navigation_version"
+
+    // Lifecycle
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
+
+    // Hilt
+    implementation "com.google.dagger:hilt-android:$hilt_plugin_version"
+    implementation "com.google.dagger:hilt-android-compiler:$hilt_plugin_version"
+    kapt "com.google.dagger:hilt-compiler:$hilt_plugin_version"
+    implementation "androidx.hilt:hilt-navigation-compose:$hilt_version"
+
+
+
+    // Room
+    kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+
+    //Flippable
+    implementation "com.wajahatkarim:flippable:1.0.4"
+
+
 }

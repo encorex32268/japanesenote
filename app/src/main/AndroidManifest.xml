@@ -4,6 +4,7 @@
     package="com.lihan.japanesenote">
 
     <application
+        android:name=".core.di.JapaneseNoteApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
