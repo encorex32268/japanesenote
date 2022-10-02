@@ -1,46 +1,59 @@
 package com.lihan.japanesenote.presentation.home
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.lihan.japanesenote.presentation.home.component.HomeEvent
 import com.lihan.japanesenote.presentation.home.component.NoteItem
+import com.lihan.japanesenote.presentation.home.component.NoteSearchBar
 
+@ExperimentalComposeUiApi
 @Composable
 fun HomeScreen(
-    modifier: Modifier = Modifier,
     viewModel : HomeViewModel = hiltViewModel()
 ) {
 
-    viewModel.onEvent()
     val state = viewModel.state
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val focusController = LocalFocusManager.current
     Column(
-        modifier = modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
     ) {
-        //Search View  ?
-        Spacer(modifier = Modifier.height(16.dp))
-        LazyColumn{
-            item {
-                //search view ?
+        NoteSearchBar(
+            text = state.searchQuery,
+            shouldShowHint = state.isShowHint,
+            onValueChange = {
+                viewModel.onEvent(HomeEvent.SearchQuery(it))
+            },
+            onSearch = {
+                keyboardController?.hide()
+                focusController.clearFocus(true)
+                viewModel.onEvent(HomeEvent.OnSearch)
+            },
+            onFocusChanged = {
+                viewModel.onEvent(HomeEvent.OnSearchFocusChange(it.isFocused))
             }
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+        ){
             items(state.notes){ note ->
                 NoteItem(
-                    word = note.word,
-                    hiragana = note.hiragana,
-                    type = note.type,
-                    createDate = note.createDate,
-                    sentences = note.sentences
+                    note
                 )
-
-
-
             }
         }
 

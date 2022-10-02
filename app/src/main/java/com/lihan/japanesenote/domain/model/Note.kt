@@ -5,5 +5,6 @@ data class Note(
     val hiragana : String ,
     val type : List<String> ,
     val createDate : Long,
-    val sentences : List<Sentence>
+    val sentences : List<Sentence>,
+    val color : Int
 )

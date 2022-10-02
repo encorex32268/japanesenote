@@ -1,5 +1,8 @@
 package com.lihan.japanesenote.domain.model
 
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
+
 object DumpData {
     val data = arrayListOf(
         Note(
@@ -12,7 +15,8 @@ object DumpData {
                     example = "積極的な態度にする",
                     explain = "採取積極的態度"
                 )
-            )
+            ),
+            color = Color.Yellow.toArgb()
         ),
         Note(
             word = "売却",
@@ -28,7 +32,8 @@ object DumpData {
                     example = "売却します",
                     explain = "變賣"
                 )
-            )
+            ),
+            color = Color.Blue.toArgb()
         ),
 
     )

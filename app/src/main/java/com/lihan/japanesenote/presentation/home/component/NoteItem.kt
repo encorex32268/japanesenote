@@ -1,78 +1,74 @@
 package com.lihan.japanesenote.presentation.home.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.lihan.japanesenote.domain.model.Note
 import com.lihan.japanesenote.domain.model.Sentence
 import org.w3c.dom.Text
 import java.text.SimpleDateFormat
 
 @Composable
 fun NoteItem(
-    modifier: Modifier = Modifier,
-    word : String ,
-    wordFontSize : TextUnit = 24.sp,
-    hiragana : String ,
-    hiraganaFontSize : TextUnit = 16.sp,
-    type : List<String>,
-    typeFontSize: TextUnit = 12.sp,
-    createDate  : Long ,
-    createDateFontSize : TextUnit = 9.sp,
-    sentences : List<Sentence> ,
-    sentenceFontSize : TextUnit = 12.sp,
-    subSentenceFontSize : TextUnit = 9.sp,
-    isExpand : Boolean = false
+    note : Note ,
+    modifier: Modifier = Modifier
 ) {
-    Card(
+    Box(
         modifier = modifier
             .fillMaxWidth()
             .padding(8.dp)
-        ,
-        shape = RoundedCornerShape(8.dp)
+            .clip(RoundedCornerShape(8.dp))
+            .background(Color(note.color))
     ) {
         Column(
-            modifier = modifier.fillMaxWidth()
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(8.dp)
         ) {
             Row(
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = word,
-                    fontSize = wordFontSize,
+                    text = note.word,
+                    style = MaterialTheme.typography.h5,
                     fontWeight = FontWeight.ExtraBold
                 )
                 val pattern = "yyyy/MM/dd HH:mm:ss"
                 val simpleDataFormat = SimpleDateFormat(pattern)
                 Text(
-                    text = simpleDataFormat.format(createDate),
-                    fontSize = createDateFontSize
+                    text = simpleDataFormat.format(note.createDate),
+                    style = MaterialTheme.typography.body2
                 )
             }
             Spacer(modifier = Modifier.height(2.dp))
             Text(
-                text = hiragana,
-                fontSize = hiraganaFontSize,
+                text = note.hiragana,
+                style = MaterialTheme.typography.body2,
                 fontWeight = FontWeight.Bold
             )
             Spacer(modifier = Modifier.height(2.dp))
             Row(
                 modifier = modifier.fillMaxWidth()
             ) {
-                type.forEach {
+                note.type.forEach {
                     Text(
                         text = it,
-                        fontSize = typeFontSize
+                        style = MaterialTheme.typography.subtitle1
                     )
                     Spacer(modifier = Modifier.width(2.dp))
                 }
@@ -83,16 +79,16 @@ fun NoteItem(
                 color = Color.Red,
                 thickness = 4.dp
             )
-            sentences.forEach {
+            note.sentences.forEach {
                 Text(
                     text = "．${it.example}",
-                    fontSize = sentenceFontSize
+                    style = MaterialTheme.typography.subtitle1
                 )
                 Spacer(modifier = Modifier.height(1.dp))
                 Text(
                     modifier = modifier.padding(4.dp),
                     text = it.explain,
-                    fontSize = subSentenceFontSize
+                    style = MaterialTheme.typography.subtitle2
                 )
             }
 
